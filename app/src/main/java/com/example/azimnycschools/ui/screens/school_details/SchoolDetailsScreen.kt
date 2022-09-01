@@ -30,7 +30,7 @@ import com.example.azimnycschools.ui.NYCSchoolsViewModel
 @Composable
 fun SchoolDetailsScreen(
     schoolName: String = "",
-    viewModel: NYCSchoolsViewModel = hiltViewModel(),
+    viewModel: NYCSchoolsViewModel,
     onNavigateBack: () -> Unit
 ) {
     val schoolDetails by remember {viewModel.schoolDetailsApiData}

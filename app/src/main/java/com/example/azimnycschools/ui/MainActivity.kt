@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,7 +30,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Navigation() {
+fun Navigation(viewModel: NYCSchoolsViewModel = hiltViewModel()) {
 
     val navController = rememberNavController()
 
@@ -39,12 +41,14 @@ fun Navigation() {
     NavHost(navController = navController, startDestination = "schoolsList") {
         composable("schoolsList") {
             SchoolsListScreen(
+                viewModel = viewModel,
                 onNavigateToDetails = { schoolName ->
                     navController.navigate("schoolDetails/$schoolName") },
                 onSearchClicked = { schoolName -> navController.navigate("schoolDetails/$schoolName")}
             ) }
         composable("schoolDetails") {
             SchoolDetailsScreen(
+                viewModel = viewModel,
                 onNavigateBack = {}
             ) }
         composable(
@@ -55,6 +59,7 @@ fun Navigation() {
                 navBackStackEntry.arguments?.getString("schoolName")
             if (schoolName != null) {
                 SchoolDetailsScreen(
+                    viewModel = viewModel,
                     schoolName = schoolName,
                     onNavigateBack = {navController.navigate("schoolsList")}
                 )

@@ -25,7 +25,7 @@ class NYCSchoolsViewModel @Inject constructor(private val repository: Repository
     private val _schoolsAPIData: MutableState<NYCSchools> = mutableStateOf(NYCSchools())
     val schoolsAPIData: State<NYCSchools> get() = _schoolsAPIData
 
-    val _schoolDetailsApiData: MutableState<NYCSchoolsItemModel> = mutableStateOf(NYCSchoolsItemModel())
+    private val _schoolDetailsApiData: MutableState<NYCSchoolsItemModel> = mutableStateOf(NYCSchoolsItemModel())
     val schoolDetailsApiData: State<NYCSchoolsItemModel> get() = _schoolDetailsApiData
 
     private val _schoolSATsApiData: MutableState<Sats> = mutableStateOf(Sats())
@@ -38,6 +38,14 @@ class NYCSchoolsViewModel @Inject constructor(private val repository: Repository
     fun updateSearchTextState(newValue: String) {
         _searchTextState.value = newValue
     }
+
+//    lateinit var schoolsData: NYCSchools
+//
+//    fun saveSchools(schools: NYCSchools) {
+//        if (::schoolsData.isInitialized) {
+//            schoolsData = schools
+//        }
+//    }
 
     val readSchoolsFromDB: LiveData<NYCSchoolsEntity> = repository.getSchoolsFromDB().asLiveData()
 
@@ -56,7 +64,9 @@ class NYCSchoolsViewModel @Inject constructor(private val repository: Repository
     }
 
     fun getSchoolDetails(schoolName: String) {
-        _schoolsAPIData.value.find { it.schoolName == schoolName }
+        var data = _schoolsAPIData.value.find { it.schoolName == schoolName }
+        Log.i("data", "API: ${_schoolsAPIData.value}")
+        Log.i("data", "find API: ${data.toString()}")
     }
 
     private fun addSchoolsToDB(nycSchools: NYCSchools) {

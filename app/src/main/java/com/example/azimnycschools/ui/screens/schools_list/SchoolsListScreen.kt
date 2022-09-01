@@ -33,7 +33,7 @@ import com.example.azimnycschools.ui.NYCSchoolsViewModel
 @Composable
 fun SchoolsListScreen(
     modifier: Modifier = Modifier,
-    viewModel: NYCSchoolsViewModel = hiltViewModel(),
+    viewModel: NYCSchoolsViewModel,
     onNavigateToDetails: (String) -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
