@@ -19,18 +19,22 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private val viewModel : NYCSchoolsViewModel by lazy {
+        ViewModelProvider(this)[NYCSchoolsViewModel::class.java]
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             NYCSchoolsAzimTheme {
-                Navigation()
+                Navigation(viewModel)
             }
         }
     }
 }
 
 @Composable
-fun Navigation(viewModel: NYCSchoolsViewModel = hiltViewModel()) {
+fun Navigation(viewModel: NYCSchoolsViewModel) {
 
     val navController = rememberNavController()
 
@@ -43,8 +47,13 @@ fun Navigation(viewModel: NYCSchoolsViewModel = hiltViewModel()) {
             SchoolsListScreen(
                 viewModel = viewModel,
                 onNavigateToDetails = { schoolName ->
+                    viewModel.getSchoolDetails(schoolName)
+                    viewModel.getSchoolsSATsFromAPI()
                     navController.navigate("schoolDetails/$schoolName") },
-                onSearchClicked = { schoolName -> navController.navigate("schoolDetails/$schoolName")}
+                onSearchClicked = { schoolName ->
+                    viewModel.getSchoolDetails(schoolName)
+                    viewModel.getSchoolsSATsFromAPI()
+                    navController.navigate("schoolDetails/$schoolName")}
             ) }
         composable("schoolDetails") {
             SchoolDetailsScreen(

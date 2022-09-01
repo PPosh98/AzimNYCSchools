@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.azimnycschools.repository.Repository
 import com.example.azimnycschools.roomdb.NYCSchoolsEntity
 import com.example.azimnycschools.models.sats.Sats
+import com.example.azimnycschools.models.sats.SatsItemModel
 import com.example.azimnycschools.models.schools.NYCSchools
 import com.example.azimnycschools.models.schools.NYCSchoolsItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,8 +29,11 @@ class NYCSchoolsViewModel @Inject constructor(private val repository: Repository
     private val _schoolDetailsApiData: MutableState<NYCSchoolsItemModel> = mutableStateOf(NYCSchoolsItemModel())
     val schoolDetailsApiData: State<NYCSchoolsItemModel> get() = _schoolDetailsApiData
 
-    private val _schoolSATsApiData: MutableState<Sats> = mutableStateOf(Sats())
-    val schoolSATsApiData: State<Sats> get() = _schoolSATsApiData
+    private val _schoolsSATsAPIData: MutableState<Sats> = mutableStateOf(Sats())
+    val schoolsSATsAPIData: State<Sats> get() = _schoolsSATsAPIData
+
+    private val _schoolSATsAPIData: MutableState<SatsItemModel> = mutableStateOf(SatsItemModel())
+    val schoolSATsAPIData: State<SatsItemModel> get() = _schoolSATsAPIData
 
     private val _searchTextState: MutableState<String> =
         mutableStateOf(value = "")
@@ -38,14 +42,6 @@ class NYCSchoolsViewModel @Inject constructor(private val repository: Repository
     fun updateSearchTextState(newValue: String) {
         _searchTextState.value = newValue
     }
-
-//    lateinit var schoolsData: NYCSchools
-//
-//    fun saveSchools(schools: NYCSchools) {
-//        if (::schoolsData.isInitialized) {
-//            schoolsData = schools
-//        }
-//    }
 
     val readSchoolsFromDB: LiveData<NYCSchoolsEntity> = repository.getSchoolsFromDB().asLiveData()
 
@@ -63,10 +59,25 @@ class NYCSchoolsViewModel @Inject constructor(private val repository: Repository
         }
     }
 
+    fun getSchoolsSATsFromAPI() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = repository.getSchoolsSATsFromAPI()
+            Log.i("data", "data fetched from API!")
+            if(response.isSuccessful) {
+                response.body()?.let {
+                    _schoolsSATsAPIData.value = it
+                }
+            }
+        }
+    }
+
     fun getSchoolDetails(schoolName: String) {
-        var data = _schoolsAPIData.value.find { it.schoolName == schoolName }
-        Log.i("data", "API: ${_schoolsAPIData.value}")
-        Log.i("data", "find API: ${data.toString()}")
+        val schoolsData = _schoolsAPIData.value.find { it.schoolName == schoolName }
+        val schoolsSATsData = _schoolsSATsAPIData.value.find { it.schoolName == schoolName.uppercase() }
+        schoolsData?.let {_schoolDetailsApiData.value = it}
+        schoolsSATsData?.let {_schoolSATsAPIData.value = it}
+        Log.i("data", "API: ${_schoolsSATsAPIData.value}")
+        Log.i("data", "find API: ${schoolsSATsData.toString()}")
     }
 
     private fun addSchoolsToDB(nycSchools: NYCSchools) {

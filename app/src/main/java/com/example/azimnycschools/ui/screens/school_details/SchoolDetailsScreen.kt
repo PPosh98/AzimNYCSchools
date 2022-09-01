@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.azimnycschools.models.sats.Sats
+import com.example.azimnycschools.models.sats.SatsItemModel
 import com.example.azimnycschools.models.schools.NYCSchools
 import com.example.azimnycschools.models.schools.NYCSchoolsItemModel
 import com.example.azimnycschools.ui.NYCSchoolsViewModel
@@ -34,9 +35,7 @@ fun SchoolDetailsScreen(
     onNavigateBack: () -> Unit
 ) {
     val schoolDetails by remember {viewModel.schoolDetailsApiData}
-    val schoolSATDetails by remember {viewModel.schoolSATsApiData}
-
-    viewModel.getSchoolDetails(schoolName)
+    val schoolSATDetails by remember {viewModel.schoolSATsAPIData}
 
     Scaffold(
         topBar = {
@@ -64,7 +63,7 @@ fun SchoolDetailsScreen(
 }
 
 @Composable
-fun SchoolDetails(sats: Sats, nycSchool: NYCSchoolsItemModel) {
+fun SchoolDetails(sats: SatsItemModel, nycSchool: NYCSchoolsItemModel) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(1)
     ) {
@@ -73,6 +72,10 @@ fun SchoolDetails(sats: Sats, nycSchool: NYCSchoolsItemModel) {
         item { Text(text = "Location: ${nycSchool.location}") }
         item { Text(text = "Campus: ${nycSchool.campusName}") }
         item { Text(text = "Website: ${nycSchool.website}") }
+        item { Text(text = "No. of Takers: ${sats.numOfSatTestTakers}") }
+        item { Text(text = "Maths Avg: ${sats.satMathAvgScore}") }
+        item { Text(text = "Writing Avg: ${sats.satWritingAvgScore}") }
+        item { Text(text = "Critical Reading Avg: ${sats.satCriticalReadingAvgScore}") }
     }
 }
 

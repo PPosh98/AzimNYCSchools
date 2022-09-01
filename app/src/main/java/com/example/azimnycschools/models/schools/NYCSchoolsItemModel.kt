@@ -157,11 +157,11 @@ data class NYCSchoolsItemModel(
 //    @SerializedName("bus")
 //    val bus: String,
     @SerializedName("campus_name")
-    val campusName: String = "",
+    val campusName: String = "N/A",
 //    @SerializedName("census_tract")
 //    val censusTract: String,
     @SerializedName("city")
-    val city: String = "",
+    val city: String = "N/A",
 //    @SerializedName("code1")
 //    val code1: String,
 //    @SerializedName("code10")
@@ -401,7 +401,7 @@ data class NYCSchoolsItemModel(
 //    @SerializedName("latitude")
 //    val latitude: String,
     @SerializedName("location")
-    val location: String = "",
+    val location: String = "N/A",
 //    @SerializedName("longitude")
 //    val longitude: String,
 //    @SerializedName("method1")
@@ -595,9 +595,9 @@ data class NYCSchoolsItemModel(
 //    @SerializedName("school_accessibility_description")
 //    val schoolAccessibilityDescription: String,
     @SerializedName("school_email")
-    val schoolEmail: String = "",
+    val schoolEmail: String = "N/A",
     @SerializedName("school_name")
-    val schoolName: String = "",
+    val schoolName: String = "N/A",
 //    @SerializedName("school_sports")
 //    val schoolSports: String,
 //    @SerializedName("seats101")
@@ -687,7 +687,7 @@ data class NYCSchoolsItemModel(
 //    @SerializedName("transfer")
 //    val transfer: String,
     @SerializedName("website")
-    val website: String = "",
+    val website: String = "N/A",
 //    @SerializedName("zip")
 //    val zip: String
 )
